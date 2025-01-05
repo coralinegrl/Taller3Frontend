@@ -4,7 +4,6 @@ import {
   Grid,
   TextField,
   Box,
-  IconButton,
   Button,
   Dialog,
   DialogTitle,
@@ -45,13 +44,13 @@ const Users = () => {
   const [errorName, setErrorName] = React.useState();
   const [errorLastname, setErrorLastname] = React.useState();
   const [errorEmail, setErrorEmail] = React.useState();
-  const [errorPriority, setErrorPriority] = React.useState();
+  const [errorPriority] = React.useState();
   const [helperName, setHelperName] = React.useState("");
   const [helperLastname, setHelperLastname] = React.useState("");
   const [helperEmail, setHelperEmail] = React.useState("");
-  const [helperPriority, setHelperPriority] = React.useState("");
+  const [setHelperPriority] = React.useState("");
   const [currentUserId, setCurrentUserId] = React.useState(null);
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [setCurrentUser] = React.useState({});
   const [formData, setFormData] = React.useState({
     name: "",
     lastname: "",
@@ -89,15 +88,6 @@ const Users = () => {
     handleSearch(e.target.value);
   };
 
-  useEffect(() => {
-    if (formData.priority < 0 || formData.priority > 1) {
-      setHelperPriority("Privilegio inválido");
-      setErrorPriority(true);
-    } else {
-      setErrorPriority(false);
-      setHelperPriority("");
-    }
-  }, [formData.priority]);
 
   useEffect(() => {
     if (formData.email) {

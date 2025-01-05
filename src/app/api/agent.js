@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from 'axios';
 import { store } from "../store/store";
 
 axios.defaults.baseURL = "http://localhost:4000";
