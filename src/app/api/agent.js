@@ -1,26 +1,30 @@
 import axios from 'axios';
 import { store } from "../store/store";
 
-axios.defaults.baseURL = "http://localhost:4000";
-
+// Configura la URL base de Axios para todas las solicitudes
+axios.defaults.baseURL = 'https://taller3-v1.onrender.com';
 const responseBody = (response) => response.data;
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;  // Asegúrate de que esto es necesario dependiendo de tu configuración CORS en el backend
 
 /**
  * Este interceptor se encarga de añadir el token de autenticación a las peticiones
  * que se realicen al servidor.
  */
-
 axios.interceptors.request.use((config) => {
   const token = store.getState().user.token;
-  if (token) config.headers.Authorization = "Bearer " + token;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
 /**
- * Este interceptor se encarga de capturar las solicitudas y capturar las respuestas que se produzcan en las peticiones
+ * Este interceptor se encarga de capturar las respuestas y errores que se produzcan en las peticiones
  * al servidor y de mostrarlos en la consola.
  */
+axios.interceptors.response.use(undefined, error => {
+  
+  console.error('Error during request:', error);
+  return Promise.reject(error);
+});
 
 const requests = {
   get: (url) => axios.get(url).then(responseBody),
@@ -30,25 +34,24 @@ const requests = {
 };
 
 const Login = {
-  login: (email, password) => requests.post("user/login", { email, password }),
+  login: (email, password) => requests.post("/user/login", { email, password }),
 };
 
 const GetUsers = {
-  getUsers: () => requests.get("user/getUsers"),
+  getUsers: () => requests.get("/user/getUsers"),
 };
 
 const Update = {
-  update: (user) => requests.put(`user/updateUser/`, { user }),
+  update: (user) => requests.put("/user/updateUser/", { user }),
 };
 
 const GetParkings = {
-  getParkings: () => requests.get("parking/getParkings"),
-  getParking: (parkingId) => requests.get(`parking/getParking/${parkingId}`),
+  getParkings: () => requests.get("/parking/getParkings"),
+  getParking: (parkingId) => requests.get(`/parking/getParking/${parkingId}`),
 };
 
 const EditParking = {
-  editParking: (newParking) =>
-    requests.put(`parking/editParking`, { newParking }),
+  editParking: (newParking) => requests.put("/parking/editParking", { newParking }),
 };
 
 const GetReservations = {
@@ -56,7 +59,7 @@ const GetReservations = {
 };
 
 const Search = {
-  searchUser: (searchData) => requests.post("user/searchUser", { searchData }),
+  searchUser: (searchData) => requests.post("/user/searchUser", { searchData }),
 };
 
 const agent = {
